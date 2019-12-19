@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bkg_green"
+    tools:context=".view.SignupFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/std_large_margin">
+
+        <EditText
+            android:id="@+id/signupUsername"
+            android:layout_width="@dimen/std_width"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/std_large_margin"
+            android:layout_marginBottom="8dp"
+            android:ems="10"
+            android:hint="Username*"
+            android:inputType="text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/signupPassword"
+            android:layout_width="@dimen/std_width"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:ems="10"
+            android:hint="Password*"
+            android:inputType="textPassword"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/signupUsername" />
+
+        <EditText
+            android:id="@+id/otherInfo"
+            android:layout_width="@dimen/std_width"
+            android:layout_height="wrap_content"
+            android:hint="Other info*"
+            android:inputType="text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/signupPassword" />
+
+        <Button
+            android:id="@+id/signupBtn"
+            style="@style/StandardButton"
+            android:layout_width="@dimen/std_width"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="64dp"
+            android:text="SIGNUP"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/otherInfo" />
+
+        <Button
+            android:id="@+id/gotoLoginBtn"
+            style="@style/StandardButton"
+            android:layout_width="@dimen/std_width"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="GO TO LOGIN"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/signupBtn" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
