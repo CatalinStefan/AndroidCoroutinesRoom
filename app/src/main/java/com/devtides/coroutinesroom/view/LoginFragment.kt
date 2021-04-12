@@ -5,54 +5,70 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import com.devtides.coroutinesroom.R
+import com.devtides.coroutinesroom.databinding.FragmentLoginBinding
 import com.devtides.coroutinesroom.viewmodel.LoginViewModel
-import kotlinx.android.synthetic.main.fragment_login.*
 
 class LoginFragment : Fragment() {
 
+    private lateinit var binding: FragmentLoginBinding
     private lateinit var viewModel: LoginViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_login, container, false)
-    }
+    ): View {
+        binding = FragmentLoginBinding.inflate(inflater, container, false)
+        val view = binding.root
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        binding.loginBtn.setOnClickListener { onLogin(it) }
+        binding.gotoSignupBtn.setOnClickListener { onGotoSignup(it) }
 
-        loginBtn.setOnClickListener { onLogin(it) }
-        gotoSignupBtn.setOnClickListener { onGotoSignup(it) }
-
-        viewModel = ViewModelProviders.of(this).get(LoginViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
         observeViewModel()
+        return view
     }
+
 
     private fun observeViewModel() {
-        viewModel.loginComplete.observe(this, Observer { isComplete ->
-
+        viewModel.loginComplete.observe(viewLifecycleOwner, Observer { isComplete ->
+            if (isComplete) {
+                Toast.makeText(activity, "Login Complete", Toast.LENGTH_SHORT).show()
+                view?.findNavController()?.navigate(R.id.actionGoToMain)
+            }
         })
 
-        viewModel.error.observe(this, Observer { error ->
-
-
+        viewModel.error.observe(viewLifecycleOwner, Observer { error ->
+            Toast.makeText(activity, "Error: $error", Toast.LENGTH_SHORT).show()
         })
     }
 
     private fun onLogin(v: View) {
-        val action = LoginFragmentDirections.actionGoToMain()
-        Navigation.findNavController(v).navigate(action)
+        val username: String = binding.loginUsername.text.toString()
+        val password: String = binding.loginPassword.text.toString()
+        if (username.isEmpty()) {
+            showError(binding.loginUsername, "Please enter your username!")
+        } else if (password.isEmpty()) {
+            showError(binding.loginPassword, "Please enter your password!")
+        } else {
+            viewModel.login(username, password)
+        }
     }
 
     private fun onGotoSignup(v: View){
         val action = LoginFragmentDirections.actionGoToSignup()
         Navigation.findNavController(v).navigate(action)
+    }
+
+    private fun showError(editText: EditText, message: String) {
+        editText.error = message
+        editText.requestFocus()
     }
 }
